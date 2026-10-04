@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install toolchain (Rojo, StyLua, Luau)
+        run: |
+          mkdir -p "$HOME/tools" && cd "$HOME/tools"
+          curl -sSL -o rojo.zip https://github.com/rojo-rbx/rojo/releases/download/v7.4.4/rojo-7.4.4-linux-x86_64.zip && unzip -oq rojo.zip
+          curl -sSL -o stylua.zip https://github.com/JohnnyMorganz/StyLua/releases/download/v0.20.0/stylua-linux-x86_64.zip && unzip -oq stylua.zip
+          curl -sSL -o luau.zip https://github.com/luau-lang/luau/releases/download/0.650/luau-ubuntu.zip && unzip -oq luau.zip
+          chmod +x rojo stylua luau-compile
+          echo "$HOME/tools" >> "$GITHUB_PATH"
+
+      - name: Format check
+        run: stylua --check src
+
+      - name: Syntax check
+        run: |
+          set -e
+          for f in $(find src -name '*.lua'); do
+            luau-compile --binary "$f" > /dev/null
+          done
+
+      - name: Build place file
+        run: rojo build -o BattleOfTheWarlords.rbxl
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BattleOfTheWarlords.rbxl
+          path: BattleOfTheWarlords.rbxl

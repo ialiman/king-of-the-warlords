@@ -1,0 +1,79 @@
+{
+  "name": "BattleOfTheWarlords",
+  "tree": {
+    "$className": "DataModel",
+
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Shared": { "$path": "src/shared" },
+      "Remotes": {
+        "$className": "Folder",
+        "Fire": { "$className": "RemoteEvent" },
+        "Announce": { "$className": "RemoteEvent" }
+      }
+    },
+
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "Server": { "$path": "src/server" }
+    },
+
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "$properties": {
+        "CameraMaxZoomDistance": 60,
+        "CameraMinZoomDistance": 20,
+        "CharacterWalkSpeed": 16,
+        "EnableMouseLockOption": false
+      },
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "Client": { "$path": "src/client" }
+      }
+    },
+
+    "Workspace": {
+      "$className": "Workspace",
+      "$properties": { "Gravity": 196.2 },
+      "Lobby": {
+        "$className": "Model",
+        "Pad": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "Size": [60, 2, 60],
+            "CFrame": { "CFrame": { "position": [0, 149, 0], "orientation": [[1,0,0],[0,1,0],[0,0,1]] } },
+            "Color": [0.2, 0.2, 0.25],
+            "Material": "Slate"
+          }
+        },
+        "Spawn": {
+          "$className": "SpawnLocation",
+          "$properties": {
+            "Anchored": true,
+            "Size": [20, 1, 20],
+            "CFrame": { "CFrame": { "position": [0, 150.5, 0], "orientation": [[1,0,0],[0,1,0],[0,0,1]] } },
+            "Color": [0.3, 0.6, 0.3],
+            "Neutral": true,
+            "Duration": 0
+          }
+        }
+      }
+    },
+
+    "Lighting": {
+      "$className": "Lighting",
+      "$properties": {
+        "Brightness": 2,
+        "ClockTime": 16.5,
+        "Ambient": [0.35, 0.35, 0.35],
+        "OutdoorAmbient": [0.45, 0.45, 0.5]
+      }
+    },
+
+    "Players": {
+      "$className": "Players",
+      "$properties": { "CharacterAutoLoads": true }
+    }
+  }
+}
