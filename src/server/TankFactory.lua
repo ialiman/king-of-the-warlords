@@ -112,11 +112,10 @@ function TankFactory.create(player: Player, spawnCFrame: CFrame): Model
 	local linear = Instance.new("LinearVelocity")
 	linear.Name = "Drive"
 	linear.Attachment0 = driveAtt
-	linear.RelativeTo = Enum.ActuatorRelativeTo.Attachment0
-	linear.VelocityConstraintMode = Enum.VelocityConstraintMode.Plane
-	linear.PrimaryTangentAxis = Vector3.xAxis
-	linear.SecondaryTangentAxis = Vector3.zAxis
-	linear.PlaneVelocity = Vector2.zero
+	-- World-space vector; the client recomputes it from the hull's facing every frame.
+	linear.RelativeTo = Enum.ActuatorRelativeTo.World
+	linear.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
+	linear.VectorVelocity = Vector3.zero
 	linear.MaxForce = 6e5
 	linear.Enabled = false
 	linear.Parent = chassis

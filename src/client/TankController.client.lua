@@ -37,7 +37,7 @@ local function stopDriving()
 		heartbeat = nil
 	end
 	if drive then
-		drive.PlaneVelocity = Vector2.zero
+		drive.VectorVelocity = Vector3.zero
 		drive.Enabled = false
 	end
 	if steer then
@@ -109,9 +109,13 @@ local function onHeartbeat()
 	throttle += (f - throttle) * 0.12
 	turn += (t - turn) * 0.18
 
-	-- Drive: plane velocity in the chassis' local XZ. Forward is -Z.
+	-- Drive: along the hull's own forward axis (flattened), keep whatever vertical
+	-- velocity gravity gives us so the tank still settles onto the ground.
 	local speed = if throttle >= 0 then Config.DRIVE_SPEED else Config.REVERSE_SPEED
-	drive.PlaneVelocity = Vector2.new(0, -throttle * speed)
+	local look = chassis.CFrame.LookVector
+	local forward = Vector3.new(look.X, 0, look.Z)
+	forward = if forward.Magnitude > 0.01 then forward.Unit else Vector3.zero
+	drive.VectorVelocity = forward * (throttle * speed) + Vector3.new(0, chassis.AssemblyLinearVelocity.Y, 0)
 	drive.Enabled = true
 
 	-- Steering is reversed when reversing, like a real vehicle
